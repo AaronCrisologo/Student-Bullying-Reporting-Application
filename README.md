@@ -1,4 +1,4 @@
-# 🗃️🧑‍🏫 tuTok!: Student Bullying Reporting Application 🗃️🧑‍🏫 
+# 🗃️🧑‍🏫 tuTok!: Student Bullying Reporting App 🗃️🧑‍🏫 
 
 ### Team Members
 📌 [Alcayde, Louis Yvan C.]() <br>
