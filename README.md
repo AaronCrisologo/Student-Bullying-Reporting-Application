@@ -1,9 +1,9 @@
 # 🗃️🧑‍🏫 tuTok!: Student Bullying Reporting Application 🗃️🧑‍🏫 
 
 ### Team Members
-📌 [Alcayde, Louis Yvan C.]()
-📌 [Crisologo, Aaron Angelo D.]()
-📌 [Ramos, Ma. Francezca L.]()
+📌 [Alcayde, Louis Yvan C.]() <br>
+📌 [Crisologo, Aaron Angelo D.]() <br>
+📌 [Ramos, Ma. Francezca L.]() <br>
 
 📌 Instructor: Ms. Fatima Marie P. Agdon, MSCS <br>
 
