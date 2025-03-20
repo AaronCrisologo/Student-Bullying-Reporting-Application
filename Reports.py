@@ -5,8 +5,6 @@ from enum import Enum
 from UserClasses import Student
 from DataSecurity import SecurityManager
 
-
-
 class ReportStatus(Enum):
     NEW = "NEW"
     IN_PROGRESS = "IN_PROGRESS"

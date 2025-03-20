@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from PassHash import hash_password
 
 class User(ABC):
     def __init__(self, userID: str, name: str, email: str, role: str, passwordHash: str):
@@ -24,10 +23,10 @@ class Teacher(User):
         super().__init__(userID, name, email, "Teacher", passwordHash)
 
     def login(self, password: str) -> bool:
+        from DataSecurity import hash_password
         return hash_password(password) == self.passwordHash
 
-    def reviewReport(self, report) -> None:  # Removed type annotation to avoid circular reference
-        # Local import to resolve circular dependency
+    def reviewReport(self, report) -> None:
         from Reports import ReportStatus
         print(f"[INFO] Teacher {self.name} is reviewing Report ID: {report.reportID}.")
         # For demonstration, update status if the report is new.

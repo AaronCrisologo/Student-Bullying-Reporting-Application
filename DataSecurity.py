@@ -1,4 +1,6 @@
 import base64
+import hashlib
+
 from UserClasses import User
 
 class SecurityManager:
@@ -19,3 +21,7 @@ class SecurityManager:
     def decryptData(self, data: str) -> str:
         decoded_bytes = base64.b64decode(data.encode("utf-8"))
         return str(decoded_bytes, "utf-8")
+    
+def hash_password(password: str) -> str:
+    """Compute a SHA-256 hash for the given password."""
+    return hashlib.sha256(password.encode()).hexdigest()
