@@ -3,7 +3,6 @@ from datetime import datetime
 from enum import Enum
 
 from UserClasses import Student
-from DataSecurity import SecurityManager
 
 class ReportStatus(Enum):
     NEW = "NEW"
@@ -49,6 +48,7 @@ class InPersonReport(BullyingReport):
     def encryptDetails(self) -> None:
         if not self.encrypted:
             sec_mgr = SecurityManager()
+            from DataSecurity import SecurityManager
             self.description = sec_mgr.encryptData(self.description)
             self.encrypted = True
             print(f"[SECURITY] InPersonReport {self.reportID} details encrypted.")
@@ -70,6 +70,7 @@ class CyberBullyingReport(BullyingReport):
     def encryptDetails(self) -> None:
         if not self.encrypted:
             sec_mgr = SecurityManager()
+            from DataSecurity import SecurityManager
             self.description = sec_mgr.encryptData(self.description)
             self.encrypted = True
             print(f"[SECURITY] CyberBullyingReport {self.reportID} details encrypted.")

@@ -1,5 +1,5 @@
 from DummyData import school
-from MenuTypes import teacher_menu, login_user
+from MenuTypes import teacher_menu, login_user, admin_menu
 from DataSecurity import SecurityManager
 
 def main():
@@ -29,7 +29,7 @@ def main():
         elif role_choice == "2":
             teacher_menu(user, school, security_manager)
         elif role_choice == "3":
-            print("Going to admin_menu()...")
+            admin_menu(user, school, security_manager)
 
 
 if __name__ == "__main__":

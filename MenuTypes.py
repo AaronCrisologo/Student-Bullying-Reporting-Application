@@ -1,4 +1,4 @@
-from UserClasses import Teacher
+from UserClasses import Teacher, Administrator
 from SchoolClass import School
 from DataSecurity import SecurityManager
 
@@ -48,8 +48,55 @@ def teacher_menu(teacher: Teacher, school: School, security_manager: SecurityMan
         else:
             print("[WARN] Invalid choice. Please try again.")
 
-# def admin_menu():
+def admin_menu(administrator: Administrator, school: School, security_manager: SecurityManager):
+    available_teachers = [user for user in school.users if isinstance(user, Teacher)]  # Extract only Teachers
 
+    while True:
+        print("\n--- Administrator Menu ---")
+        print("1. Assign staff")
+        print("2. Logout")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            if not school.reports:
+                print("[INFO] No reports available to review.")
+                continue
+
+            reports_to_assign = [
+                {
+                    "Report ID": report.reportID,
+                    "Type": type(report).__name__,
+                    "Status": report.status.value,
+                    "Assigned Teacher": getattr(report, "assigned_teacher", None).name if hasattr(report, "assigned_teacher") and report.assigned_teacher else "None"
+                }
+                for report in school.reports
+            ]
+
+            print("\n--- Reports List ---")
+            for idx, report_info in enumerate(reports_to_assign, start=1):
+                print(f"{idx}. Report ID: {report_info['Report ID']}, Type: {report_info['Type']}, Status: {report_info['Status']}, Assigned Staff: {report_info['Assigned Teacher']}")
+
+            sel = input("Select a report number to assign a staff on the case: ")
+            try:
+                sel = int(sel)
+                if sel < 1 or sel > len(reports_to_assign):
+                    print("[ERROR] Invalid selection.")
+                    continue
+                selected_report = school.reports[sel - 1]  # Get the actual Report object
+            except ValueError:
+                print("[ERROR] Invalid input; please enter a number.")
+                continue
+
+            administrator.assignStaff(selected_report, available_teachers)
+
+        elif choice == "2":
+            print("[INFO] Logging out...")
+            break
+
+        else:
+            print("[WARN] Invalid choice. Please try again.")
+
+    
 def login_user(role_choice: str, school: School):
     email = input("Enter your email: ").strip()
     password = input("Enter your password: ").strip()
@@ -62,8 +109,9 @@ def login_user(role_choice: str, school: School):
                 if user.login(password):
                     print(f"\nLogin Successful! Welcome, honorable sir {user.name}!")
                     return user
-            # elif role_choice == "3" and isinstance(user, Administrator):
-            #     if user.login(password):
-            #         return user
+            elif role_choice == "3" and isinstance(user, Administrator):
+                if user.login(password):
+                    print(f"\nLogin Successful! Welcome, {user.name}!")
+                    return user
     print("[ERROR] Authentication failed. Please check your credentials and role.")
     return None

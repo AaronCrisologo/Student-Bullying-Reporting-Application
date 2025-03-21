@@ -40,4 +40,62 @@ class Teacher(User):
             report.encryptDetails()
 
 
-# class Administrator(User):
+class Administrator(User):
+    def __init__(self, userID: str, name: str, email: str, passwordHash: str):
+        super().__init__(userID, name, email, "Administrator", passwordHash)
+
+    def login(self, password: str) -> bool:
+        from DataSecurity import hash_password
+        return hash_password(password) == self.passwordHash
+
+    def assignStaff(self, report, available_teachers: list[Teacher]) -> None:
+        """Assign, change, or remove a teacher from the report."""
+        from DataSecurity import SecurityManager  
+        security_manager = SecurityManager()  
+
+        if not security_manager.checkPermission(self, "assign_staff"):  
+            print("Permission denied to assign staff.")
+            return
+
+        # Check if a staff is already assigned
+        if hasattr(report, "assigned_teacher") and report.assigned_teacher:
+            print(f"\n[INFO] Report {report.reportID} is already assigned to {report.assigned_teacher.name}.")
+            print("1. Change Staff")
+            print("2. Remove Staff")
+            print("3. Back")
+
+            choice = input("Select an option: ")
+
+            if choice == "1":
+                self._assignNewTeacher(report, available_teachers)
+            elif choice == "2":
+                report.assigned_teacher = None
+                print(f"\n[UPDATE] Staff removed from Report {report.reportID}.")
+            else:
+                print("[INFO] Returning to previous menu.")
+                return
+        else:
+            self._assignNewTeacher(report, available_teachers)
+
+    def _assignNewTeacher(self, report, available_teachers: list[Teacher]) -> None:
+        """Helper method to assign a new teacher to the report."""
+        if not available_teachers:
+            print("[ERROR] No available teachers to assign.")
+            return
+
+        print("\n--- Available Teachers ---")
+        for idx, teacher in enumerate(available_teachers, start=1):
+            print(f"{idx}. {teacher.name} ({teacher.email})") 
+
+        try:
+            sel = int(input("Select a teacher by number: "))
+            if sel < 1 or sel > len(available_teachers):
+                print("[ERROR] Invalid selection.")
+                return
+            selected_teacher = available_teachers[sel - 1]
+        except ValueError:
+            print("[ERROR] Invalid input; please enter a number.")
+            return
+
+        report.assigned_teacher = selected_teacher  
+        print(f"\n[UPDATE] Administrator {self.name} assigned {selected_teacher.name} to report {report.reportID}.")
