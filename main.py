@@ -25,7 +25,7 @@ def main():
             continue
 
         if role_choice == "1":
-            print("Going to student_menu()...")
+            student_menu(user, school)
         elif role_choice == "2":
             teacher_menu(user, school, security_manager)
         elif role_choice == "3":
