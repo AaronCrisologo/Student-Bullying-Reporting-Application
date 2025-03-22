@@ -1,8 +1,78 @@
-from UserClasses import Teacher, Administrator
+from UserClasses import Teacher, Administrator, Student
+from Reports import InPersonReport, CyberBullyingReport, ConfidentialityLevel
 from SchoolClass import School
 from DataSecurity import SecurityManager
 
-# def student_menu():
+def student_menu(student: Student, school: School):
+    while True:
+        print("\n--- Student Menu ---")
+        print("1. File a bullying report")
+        print("2. View my reports")
+        print("3. Logout")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            print("\n--- Report Bullying ---")
+            print("1. In-Person Bullying")
+            print("2. Cyberbullying")
+            report_type = input("Select report type: ")
+
+            reportID = f"R{len(school.reports) + 1:03}"  # Generate a unique ID
+            description = input("Enter report description: ")
+
+            print("\nConfidentiality Levels:")
+            print("1. Public")
+            print("2. Confidential")
+            print("3. Highly Confidential")
+            conf_choice = input("Select confidentiality level: ")
+            conf_level = {
+                "1": ConfidentialityLevel.PUBLIC,
+                "2": ConfidentialityLevel.CONFIDENTIAL,
+                "3": ConfidentialityLevel.HIGHLY_CONFIDENTIAL
+            }.get(conf_choice, ConfidentialityLevel.CONFIDENTIAL)
+
+            if report_type == "1":
+                location = input("Enter location of incident: ")
+                report = InPersonReport(
+                    reportID=reportID,
+                    reportDate=datetime.now(),
+                    description=description,
+                    confidentialityLevel=conf_level,
+                    location=location,
+                )
+            elif report_type == "2":
+                online_platform = input("Enter online platform (e.g., Facebook, Instagram): ")
+                report = CyberBullyingReport(
+                    reportID=reportID,
+                    reportDate=datetime.now(),
+                    description=description,
+                    confidentialityLevel=conf_level,
+                    onlinePlatform=online_platform,
+                )
+            else:
+                print("[ERROR] Invalid report type selection.")
+                continue
+
+            student.fileReport(report)  # File report through Student method
+            school.reports.append(report)  # Add report to school's record
+            print(f"[SUCCESS] Report {report.reportID} filed successfully.")
+
+        elif choice == "2":
+            print("\n--- My Filed Reports ---")
+            student_reports = [r for r in school.reports if r.reporter == student]
+
+            if not student_reports:
+                print("[INFO] No reports filed yet.")
+                continue
+
+            for report in student_reports:
+                print(f"Report ID: {report.reportID}, Type: {type(report).__name__}, Status: {report.status.value}")
+
+        elif choice == "3":
+            print("[INFO] Logging out...")
+            break
+        else:
+            print("[WARN] Invalid choice. Please try again.")
 
 def teacher_menu(teacher: Teacher, school: School, security_manager: SecurityManager):
     while True:
