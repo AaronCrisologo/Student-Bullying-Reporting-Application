@@ -2,6 +2,7 @@ from UserClasses import Teacher, Administrator, Student
 from Reports import InPersonReport, CyberBullyingReport, ConfidentialityLevel
 from SchoolClass import School
 from DataSecurity import SecurityManager
+from datetime import datetime
 
 def student_menu(student: Student, school: School):
     while True:
@@ -18,6 +19,7 @@ def student_menu(student: Student, school: School):
             report_type = input("Select report type: ")
 
             reportID = f"R{len(school.reports) + 1:03}"  # Generate a unique ID
+            report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             description = input("Enter report description: ")
 
             print("\nConfidentiality Levels:")
@@ -35,8 +37,8 @@ def student_menu(student: Student, school: School):
                 location = input("Enter location of incident: ")
                 report = InPersonReport(
                     reportID=reportID,
-                    reportDate=datetime.now(),
                     description=description,
+                    reportDate=report_date,
                     confidentialityLevel=conf_level,
                     location=location,
                 )
@@ -44,7 +46,6 @@ def student_menu(student: Student, school: School):
                 online_platform = input("Enter online platform (e.g., Facebook, Instagram): ")
                 report = CyberBullyingReport(
                     reportID=reportID,
-                    reportDate=datetime.now(),
                     description=description,
                     confidentialityLevel=conf_level,
                     onlinePlatform=online_platform,
@@ -172,10 +173,11 @@ def login_user(role_choice: str, school: School):
     password = input("Enter your password: ").strip()
     for user in school.users:
         if user.email.lower() == email.lower():
-            # if role_choice == "1" and isinstance(user, Student):
-            #     if user.login(password):
-            #         return user
-            if role_choice == "2" and isinstance(user, Teacher):
+            if role_choice == "1" and isinstance(user, Student):
+                if user.login(password):
+                    print(f"\nLogin Successful! Welcome, {user.name}!")
+                    return user
+            elif role_choice == "2" and isinstance(user, Teacher):
                 if user.login(password):
                     print(f"\nLogin Successful! Welcome, honorable sir {user.name}!")
                     return user
