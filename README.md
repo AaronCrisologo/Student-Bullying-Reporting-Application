@@ -20,6 +20,20 @@
   ✅ Static Security Utilities  
 
 ---
+## ⚠️ Before You Run ⚠️
+- For simulation purposes, use log in credentials from DummyData.py! OR use these log in credentials as they are hardcoded. 
+
+### 🧑‍🎓 Student Log in Credentials 🧑‍🎓
+📧 Email: Ben@student.com
+🔒 Password: yulo
+
+### 👨‍🏫 Teacher Log in Credentials 👨‍🏫
+📧 Email: Raffy@teacher.com
+🔒 Password: Raffy Tulfo in Action
+
+### 🧑‍🎓 Admin Log in Credentials 🧑‍🎓
+📧 Email: Cardo@admin.com
+🔒 Password: bengbeng
 
 ## 🛠️ Installation & Setup 🛠️  
 
@@ -33,11 +47,11 @@
 git clone https://github.com/AaronCrisologo/Student-Bullying-Reporting-Application
 cd Student-Bullying-Reporting-Application
 ```
-:2: **Install dependencies:**
+2️⃣ **Install dependencies:**
 ```sh
 pip install -r requirements.txt
 ```
-:3: **Run the Application**
+3️⃣ **Run the Application**
 ```sh
 python main.py
 ```
