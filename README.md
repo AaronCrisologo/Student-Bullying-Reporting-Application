@@ -24,15 +24,15 @@
 - For simulation purposes, use log in credentials from DummyData.py! OR use these log in credentials as they are hardcoded. 
 
 ### 🧑‍🎓 Student Log in Credentials 🧑‍🎓
-📧 Email: Ben@student.com
+📧 Email: Ben@student.com <br>
 🔒 Password: yulo
 
 ### 👨‍🏫 Teacher Log in Credentials 👨‍🏫
-📧 Email: Raffy@teacher.com
+📧 Email: Raffy@teacher.com <br>
 🔒 Password: Raffy Tulfo in Action
 
 ### 🧑‍🎓 Admin Log in Credentials 🧑‍🎓
-📧 Email: Cardo@admin.com
+📧 Email: Cardo@admin.com <br>
 🔒 Password: bengbeng
 
 ## 🛠️ Installation & Setup 🛠️  
