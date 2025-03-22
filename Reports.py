@@ -1,8 +1,12 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 from enum import Enum
+from typing import TYPE_CHECKING
 
-from UserClasses import Student
+
+if TYPE_CHECKING:
+    from UserClasses import Student
+    from DataSecurity import SecurityManager
 
 class ReportStatus(Enum):
     NEW = "NEW"
@@ -16,14 +20,16 @@ class ConfidentialityLevel(Enum):
     HIGHLY_CONFIDENTIAL = "HIGHLY_CONFIDENTIAL"
 
 
-
 class BullyingReport(ABC):
     def __init__(self, reportID: str, reportDate: datetime, description: str,
-                 confidentialityLevel: ConfidentialityLevel, reporter: Student = None):
+                 confidentialityLevel: ConfidentialityLevel, reporter: 'Student' = None):
         self.reportID = reportID
+        self.reportDate = reportDate
         self.description = description
+        self.confidentialityLevel = confidentialityLevel  # Corrected typo from ConfidentialityLevel to confidentialityLevel
         self.status = ReportStatus.NEW
         self.encrypted = False
+        self.reporter = reporter
 
     @abstractmethod
     def validateReport(self) -> bool:
@@ -37,7 +43,7 @@ class BullyingReport(ABC):
 class InPersonReport(BullyingReport):
     def __init__(self, reportID: str, reportDate: datetime, description: str,
                  confidentialityLevel: ConfidentialityLevel, location: str,
-                 reporter: Student = None, witnesses: list = None):
+                 reporter: 'Student' = None, witnesses: list = None):
         super().__init__(reportID, reportDate, description, confidentialityLevel, reporter)
         self.location = location
         self.witnesses = witnesses if witnesses is not None else []
@@ -47,8 +53,8 @@ class InPersonReport(BullyingReport):
 
     def encryptDetails(self) -> None:
         if not self.encrypted:
-            sec_mgr = SecurityManager()
             from DataSecurity import SecurityManager
+            sec_mgr = SecurityManager()
             self.description = sec_mgr.encryptData(self.description)
             self.encrypted = True
             print(f"[SECURITY] InPersonReport {self.reportID} details encrypted.")
@@ -59,7 +65,7 @@ class InPersonReport(BullyingReport):
 class CyberBullyingReport(BullyingReport):
     def __init__(self, reportID: str, reportDate: datetime, description: str,
                  confidentialityLevel: ConfidentialityLevel, onlinePlatform: str,
-                 reporter: Student = None, evidence: list = None):
+                 reporter: 'Student' = None, evidence: list = None):
         super().__init__(reportID, reportDate, description, confidentialityLevel, reporter)
         self.onlinePlatform = onlinePlatform
         self.evidence = evidence if evidence is not None else []
@@ -69,8 +75,8 @@ class CyberBullyingReport(BullyingReport):
 
     def encryptDetails(self) -> None:
         if not self.encrypted:
-            sec_mgr = SecurityManager()
             from DataSecurity import SecurityManager
+            sec_mgr = SecurityManager()
             self.description = sec_mgr.encryptData(self.description)
             self.encrypted = True
             print(f"[SECURITY] CyberBullyingReport {self.reportID} details encrypted.")
