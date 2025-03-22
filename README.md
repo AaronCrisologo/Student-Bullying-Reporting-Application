@@ -14,3 +14,15 @@
 ⌨️ Programming language used: Python <br>
 ⌨️ Utilized built in modules such as: abc, enum, datetime <br>
 ⌨️ Implemented: OOP, inheritance, abstraction, modular design and static security utilities
+
+## 🛠️ Installation & Setup 🛠️  
+
+### 📌 Prerequisites  
+- Python **3.10+**  
+- Required modules (install using `pip`)  
+
+### 📥 Installation  
+1️⃣ **Clone the repository:**  
+```sh
+git clone https://github.com/your-repo/tutok.git
+cd tutok
