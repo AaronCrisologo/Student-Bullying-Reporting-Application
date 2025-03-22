@@ -37,26 +37,28 @@ def student_menu(student: Student, school: School):
                 location = input("Enter location of incident: ")
                 report = InPersonReport(
                     reportID=reportID,
+                    reportDate=report_date,  # Fixed argument order
                     description=description,
-                    reportDate=report_date,
                     confidentialityLevel=conf_level,
                     location=location,
+                    reporter=student
                 )
             elif report_type == "2":
                 online_platform = input("Enter online platform (e.g., Facebook, Instagram): ")
                 report = CyberBullyingReport(
                     reportID=reportID,
+                    reportDate=report_date,  # Fixed argument order
                     description=description,
-                    reportDate=report_date,
                     confidentialityLevel=conf_level,
                     onlinePlatform=online_platform,
+                    reporter=student
                 )
             else:
                 print("[ERROR] Invalid report type selection.")
                 continue
 
             student.fileReport(report)  # File report through Student method
-            school.reports.append(report)  # Add report to school's record
+
             print(f"[SUCCESS] Report {report.reportID} filed successfully.")
 
         elif choice == "2":
@@ -75,6 +77,7 @@ def student_menu(student: Student, school: School):
             break
         else:
             print("[WARN] Invalid choice. Please try again.")
+
 
 def teacher_menu(teacher: Teacher, school: School, security_manager: SecurityManager):
     while True:
