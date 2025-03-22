@@ -1,5 +1,5 @@
 from DummyData import school
-from MenuTypes import teacher_menu, login_user, admin_menu
+from MenuTypes import teacher_menu, login_user, admin_menu, student_menu
 from DataSecurity import SecurityManager
 
 def main():
