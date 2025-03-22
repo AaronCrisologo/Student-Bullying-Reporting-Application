@@ -31,7 +31,7 @@
 📧 Email: Raffy@teacher.com <br>
 🔒 Password: Raffy Tulfo in Action
 
-### 🧑‍🎓 Admin Log in Credentials 🧑‍🎓
+### 🖥️ Admin Log in Credentials 🖥️
 📧 Email: Cardo@admin.com <br>
 🔒 Password: bengbeng
 
