@@ -19,7 +19,7 @@ def student_menu(student: Student, school: School):
             report_type = input("Select report type: ")
 
             reportID = f"R{len(school.reports) + 1:03}"  # Generate a unique ID
-            report_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            report_date = datetime.now()
             description = input("Enter report description: ")
 
             print("\nConfidentiality Levels:")
@@ -47,6 +47,7 @@ def student_menu(student: Student, school: School):
                 report = CyberBullyingReport(
                     reportID=reportID,
                     description=description,
+                    reportDate=report_date,
                     confidentialityLevel=conf_level,
                     onlinePlatform=online_platform,
                 )
