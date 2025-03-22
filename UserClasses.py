@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from Reports import BullyingReport  
 
 class User(ABC):
     def __init__(self, userID: str, name: str, email: str, role: str, passwordHash: str):
@@ -12,11 +13,27 @@ class User(ABC):
     def login(self, password: str) -> bool:
         pass
 
-
 class Student(User):
     def __init__(self, userID: str, name: str, email: str, grade: int, passwordHash: str):
         super().__init__(userID, name, email, "Student", passwordHash)
+        self.grade = grade  
 
+    def login(self, password: str) -> bool:
+        from DataSecurity import hash_password
+        return hash_password(password) == self.passwordHash
+
+    def fileReport(self, report: BullyingReport) -> None:
+        """Allows a student to file a bullying report."""
+        from School import School  
+
+        school = School.get_instance()  # Assuming a singleton school instance
+        if not isinstance(report, BullyingReport):
+            print("[ERROR] Invalid report submission.")
+            return
+
+        report.reporter = self  # Assign the student as the reporter
+        school.registerReport(report)  # Register report within the school system
+        print(f"[SUCCESS] Report {report.reportID} submitted by {self.name}.")
 
 class Teacher(User):
     def __init__(self, userID: str, name: str, email: str, passwordHash: str):
