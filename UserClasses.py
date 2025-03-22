@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
-from Reports import BullyingReport  
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from Reports import BullyingReport  
+    from DataSecurity import hash_password, SecurityManager
 
 class User(ABC):
     def __init__(self, userID: str, name: str, email: str, role: str, passwordHash: str):
@@ -22,11 +26,12 @@ class Student(User):
         from DataSecurity import hash_password
         return hash_password(password) == self.passwordHash
 
-    def fileReport(self, report: BullyingReport) -> None:
+    def fileReport(self, report: 'BullyingReport') -> None:
         """Allows a student to file a bullying report."""
-        from School import School  
+        from Reports import BullyingReport
+        from SchoolClass import School  
 
-        school = School.get_instance()  # Assuming a singleton school instance
+        school = School.get_instance() 
         if not isinstance(report, BullyingReport):
             print("[ERROR] Invalid report submission.")
             return
@@ -65,7 +70,7 @@ class Administrator(User):
         from DataSecurity import hash_password
         return hash_password(password) == self.passwordHash
 
-    def assignStaff(self, report, available_teachers: list[Teacher]) -> None:
+    def assignStaff(self, report, available_teachers: list) -> None:
         """Assign, change, or remove a teacher from the report."""
         from DataSecurity import SecurityManager  
         security_manager = SecurityManager()  
@@ -94,7 +99,7 @@ class Administrator(User):
         else:
             self._assignNewTeacher(report, available_teachers)
 
-    def _assignNewTeacher(self, report, available_teachers: list[Teacher]) -> None:
+    def _assignNewTeacher(self, report, available_teachers: list) -> None:
         """Helper method to assign a new teacher to the report."""
         if not available_teachers:
             print("[ERROR] No available teachers to assign.")
