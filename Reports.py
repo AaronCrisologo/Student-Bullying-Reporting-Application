@@ -26,7 +26,7 @@ class BullyingReport(ABC):
         self.reportID = reportID
         self.reportDate = reportDate
         self.description = description
-        self.confidentialityLevel = confidentialityLevel  # Corrected typo from ConfidentialityLevel to confidentialityLevel
+        self.confidentialityLevel = confidentialityLevel  
         self.status = ReportStatus.NEW
         self.encrypted = False
         self.reporter = reporter
