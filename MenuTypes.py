@@ -37,28 +37,26 @@ def student_menu(student: Student, school: School):
                 location = input("Enter location of incident: ")
                 report = InPersonReport(
                     reportID=reportID,
-                    reportDate=report_date,  # Fixed argument order
                     description=description,
+                    reportDate=report_date,
                     confidentialityLevel=conf_level,
                     location=location,
-                    reporter=student
                 )
             elif report_type == "2":
                 online_platform = input("Enter online platform (e.g., Facebook, Instagram): ")
                 report = CyberBullyingReport(
                     reportID=reportID,
-                    reportDate=report_date,  # Fixed argument order
                     description=description,
+                    reportDate=report_date,
                     confidentialityLevel=conf_level,
                     onlinePlatform=online_platform,
-                    reporter=student
                 )
             else:
                 print("[ERROR] Invalid report type selection.")
                 continue
 
             student.fileReport(report)  # File report through Student method
-
+            school.reports.append(report)  # Add report to school's record
             print(f"[SUCCESS] Report {report.reportID} filed successfully.")
 
         elif choice == "2":
@@ -78,32 +76,30 @@ def student_menu(student: Student, school: School):
         else:
             print("[WARN] Invalid choice. Please try again.")
 
-
 def teacher_menu(teacher: Teacher, school: School, security_manager: SecurityManager):
     while True:
         print("\n--- Teacher Menu ---")
-        print("1. Review a bullying report")
-        print("2. View all reports")
+        print("1. Review an assigned bullying report")
+        print("2. View all your assigned reports")
         print("3. Logout")
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            if not school.reports:
-                print("[INFO] No reports available to review.")
+            # Filter reports assigned to this teacher
+            assigned_reports = [report for report in school.reports if hasattr(report, "assigned_teacher") and report.assigned_teacher == teacher]
+            if not assigned_reports:
+                print("[INFO] No reports assigned to you for review.")
                 continue
 
-            print("\n--- Reports List ---")
-            reports_to_review = []
-            for idx, report in enumerate(school.reports, start=1):
+            print("\n--- Assigned Reports List ---")
+            for idx, report in enumerate(assigned_reports, start=1):
                 print(f"{idx}. Report ID: {report.reportID}, Type: {type(report).__name__}, Status: {report.status.value}")
-                reports_to_review.append(report)
-            sel = input("Select a report number to review: ")
             try:
-                sel = int(sel)
-                if sel < 1 or sel > len(reports_to_review):
+                sel = int(input("Select a report number to review: "))
+                if sel < 1 or sel > len(assigned_reports):
                     print("[ERROR] Invalid selection.")
                     continue
-                selected_report = reports_to_review[sel - 1]
+                selected_report = assigned_reports[sel - 1]
             except ValueError:
                 print("[ERROR] Invalid input; please enter a number.")
                 continue
@@ -113,13 +109,22 @@ def teacher_menu(teacher: Teacher, school: School, security_manager: SecurityMan
             if view_details.lower() == "y":
                 decrypted = security_manager.decryptData(selected_report.description)
                 print(f"Decrypted Description: {decrypted}")
+
         elif choice == "2":
-            print("\n--- All Reports ---")
-            for report in school.reports:
+            # Again, list only reports assigned to this teacher
+            assigned_reports = [report for report in school.reports if hasattr(report, "assigned_teacher") and report.assigned_teacher == teacher]
+            if not assigned_reports:
+                print("[INFO] No reports assigned to you.")
+                continue
+
+            print("\n--- All Your Assigned Reports ---")
+            for report in assigned_reports:
                 print(f"Report ID: {report.reportID}, Type: {type(report).__name__}, Status: {report.status.value}")
+
         elif choice == "3":
             print("[INFO] Logging out...")
             break
+
         else:
             print("[WARN] Invalid choice. Please try again.")
 
