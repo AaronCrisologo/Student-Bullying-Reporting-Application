@@ -50,7 +50,7 @@ class Teacher(User):
 
     def reviewReport(self, report) -> None:
         from Reports import ReportStatus
-        print(f"[INFO] Teacher {self.name} is reviewing Report ID: {report.reportID}.")
+        print(f"\n[INFO] Teacher {self.name} is reviewing Report ID: {report.reportID}.")
         # For demonstration, update status if the report is new.
         if report.status == ReportStatus.NEW:
             report.status = ReportStatus.IN_PROGRESS

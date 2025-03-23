@@ -56,7 +56,6 @@ def student_menu(student: Student, school: School):
                 continue
 
             student.fileReport(report)  # File report through Student method
-            school.reports.append(report)  # Add report to school's record
             print(f"[SUCCESS] Report {report.reportID} filed successfully.")
 
         elif choice == "2":
@@ -105,7 +104,7 @@ def teacher_menu(teacher: Teacher, school: School, security_manager: SecurityMan
                 continue
 
             teacher.reviewReport(selected_report)
-            view_details = input("Do you want to view the decrypted description? (y/n): ")
+            view_details = input("\nDo you want to view the decrypted description? (y/n): ")
             if view_details.lower() == "y":
                 decrypted = security_manager.decryptData(selected_report.description)
                 print(f"Decrypted Description: {decrypted}")
@@ -134,7 +133,8 @@ def admin_menu(administrator: Administrator, school: School, security_manager: S
     while True:
         print("\n--- Administrator Menu ---")
         print("1. Assign staff")
-        print("2. Logout")
+        print("2. View all reports")
+        print("3. Logout")
         choice = input("Enter your choice: ")
 
         if choice == "1":
@@ -170,6 +170,21 @@ def admin_menu(administrator: Administrator, school: School, security_manager: S
             administrator.assignStaff(selected_report, available_teachers)
 
         elif choice == "2":
+            reports_to_assign = [
+                {
+                    "Report ID": report.reportID,
+                    "Type": type(report).__name__,
+                    "Status": report.status.value,
+                    "Assigned Teacher": getattr(report, "assigned_teacher", None).name if hasattr(report, "assigned_teacher") and report.assigned_teacher else "None"
+                }
+                for report in school.reports
+            ]
+
+            print("\n--- Reports List ---")
+            for idx, report_info in enumerate(reports_to_assign, start=1):
+                print(f"{idx}. Report ID: {report_info['Report ID']}, Type: {report_info['Type']}, Status: {report_info['Status']}, Assigned Staff: {report_info['Assigned Teacher']}")
+
+        elif choice == "3":
             print("[INFO] Logging out...")
             break
 
